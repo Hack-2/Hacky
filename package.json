@@ -1,0 +1,28 @@
+{
+  "name": "hacky",
+  "version": "1.0.0",
+  "description": "The Discord bot for Hack^2",
+  "main": "src/app.ts",
+  "scripts": {
+    "start": "ts-node src/app.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Hack-2/hacky.git"
+  },
+  "author": "Hack^2",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/Hack-2/hacky/issues"
+  },
+  "homepage": "https://github.com/Hack-2/hacky#readme",
+  "dependencies": {
+    "@ilefa/ivy": "^1.0.5",
+    "@typegoose/typegoose": "^7.6.0",
+    "mongoose": "^5.12.12"
+  },
+  "devDependencies": {
+    "ts-node": "^10.0.0",
+    "typescript": "^4.3.2"
+  }
+}
