@@ -67,7 +67,7 @@ export class Announcer extends Module {
                 return;
 
             this.announced.push(closest);
-            this.channel.send(this.generateAnnouncment(closest));
+            this.channel.send(this.generateAnnouncement(closest));
         });
     }
 
@@ -92,7 +92,7 @@ export class Announcer extends Module {
     }
 
     // TODO: Tweak this to people's liking, this is just a quick mockup of what an announcement might look like
-    private generateAnnouncment = (event: ICalEvent) => {
+    private generateAnnouncement = (event: ICalEvent) => {
         return this.manager.engine.embeds.build(event.summary, env.icon, event.description ?? 'This event does not have a description.', [
             {
                 name: 'Event Begins At',
