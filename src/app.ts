@@ -2,8 +2,9 @@ import env from '../env.json';
 import CustomEventManager from './lib/events';
 
 import { Client } from 'discord.js';
+import { Announcer } from './lib/modules';
 import { DataProvider } from './lib/data';
-import { MongoDbManager } from './lib/db';
+import { StartupHandler } from './lib/startup';
 import { IvyEngine, Logger } from '@ilefa/ivy';
 
 export default class HackyBot extends IvyEngine {
@@ -23,6 +24,7 @@ export default class HackyBot extends IvyEngine {
             reportErrors: [],
             color: 0x5084C4,
             provider: new DataProvider(),
+            startup: new StartupHandler(),
             presence: {
                 status: 'online',
                 activity: {
@@ -44,7 +46,8 @@ export default class HackyBot extends IvyEngine {
     registerCommands() {}
 
     registerModules() {
-        this.registerModule(new MongoDbManager());
+        this.registerModule(new Announcer());
+        // this.registerModule(new MongoDbManager());
     }
 
     registerFlows() {}
