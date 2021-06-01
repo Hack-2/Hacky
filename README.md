@@ -30,6 +30,8 @@ Firstly, rename the ``env.example.json`` file to ``env.json``, and use the below
 | ``mongo.port``             | ``string``    | a numeric representation of the port the MongoDB is running on                                      |  
 | ``mongo.dbName``           | ``string``    | the database to select and utilize during transactions with the MongoDB                             |
 
+To actually start Hacky, you can simply run ``npm start``, and it should start without any problems.
+
 ## Setting up the Announcer with Google Calendar
 
 To link up a Google Calendar with the announcer, it is quite a simple and straight forward process.
