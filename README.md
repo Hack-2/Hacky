@@ -18,7 +18,7 @@ Firstly, rename the ``env.example.json`` file to ``env.json``, and use the below
 | -----------                |  -----------  | -----------                                                                                         |
 | ``token``                  | ``string``    | the bot token from the discord developer portal                                                     |
 | ``icon``                   | ``string``    | the icon to be used in embeds, and other places for the Hack^2                                      |
-| ``calendar``               | ``string``    | the ``Secret address in iCal format`` link from Google Calendar *(more below)*                      |
+| ``calendar``               | ``string``    | the ``Address in iCal format`` link from Google Calendar *(more below)*                             |
 | ``announcer``              | ``object``    | the object responsible for controlling the behavior of the automatic announcer                      |
 | ``annnouncer.channel``     | ``string``    | the discord snowflake id of the channel automatic announcements will be sent in                     |
 | ``announcer.interval``     | ``string``    | a [cron schedule](https://crontab.guru) for how often to check for updates/run the announcer        |
@@ -56,9 +56,9 @@ Next click on Settings and Sharing, and once on the settings page, click on the 
 
 ### Step 3
 
-Now, depending on if this is a public calendar or not, you can either you the **Public address in iCal format**, or the **Secret address in iCal format**.
+Now, depending on if this is a public calendar or not, you can either use the **Public address in iCal format**, or the **Secret address in iCal format**.
 
-In my case my this example, my calendar, ``Hack^2 Test`` is private, so I would copy the secret address.
+In this example, the Google Calendar I am linking, ``Hack^2 Test`` is private, so I would copy the secret address.
 
 ![copy iCal address](.assets/step3.png)
 

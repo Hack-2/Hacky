@@ -9,7 +9,9 @@ export type ICalEvent = {
     datetype: string;
     end: Date;
     dtstamp: Date;
+    organizer?: ICalEventOrganizer;
     uid: string;
+    attendee?: ICalEventAttendee[];
     created: Date;
     description: string;
     lastmodified: Date;
@@ -18,6 +20,18 @@ export type ICalEvent = {
     status: string;
     summary: string;
     transparency: string;
+}
+
+export type ICalEventOrganizer = {
+    params: {
+        CN: string;
+    };
+    val: string;
+}
+
+export type ICalEventAttendee = {
+    params: [];
+    val: '';
 }
 
 /**

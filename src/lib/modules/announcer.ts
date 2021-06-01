@@ -2,8 +2,8 @@ import env from '../../../env.json';
 import scheduler from 'node-schedule';
 
 import { TextChannel } from 'discord.js';
-import { Module, numberEnding, time } from '@ilefa/ivy';
 import { getCalendar, getClosestEvent, ICalEvent } from '../events/calendar';
+import { getLatestTimeValue, link, Module, numberEnding, time } from '@ilefa/ivy';
 
 export class Announcer extends Module {
 
@@ -44,28 +44,29 @@ export class Announcer extends Module {
             ctx.channel = channel;
         })
 
+        this.announced = [];
         this.events = await getCalendar();
         this.log(`Loaded ${this.events.length} event${numberEnding(this.events.length)} from the calendar.`);
 
         this.job = scheduler.scheduleJob(env.announcer.interval, async _ => {
             // Check if the calendar has been updated since the last check.
             let cur = await getCalendar();
-            if (this.anyNewIds(ctx.events, cur))
+            if (this.anyUpdates(ctx.events, cur))
                 ctx.events = cur;
 
             // Closest event has already elapsed.
             let closest = getClosestEvent(ctx.events);
-            if (Date.now() - closest.dtstamp.getTime() > 0)
+            if (Date.now() - closest.start.getTime() > 0)
                 return;
-
+            
             // sendDiff threshold not hit yet, not ready to announce.
-            if (closest.dtstamp.getTime() - Date.now() > env.announcer.sendDiff)
+            if (closest.start.getTime() - Date.now() > env.announcer.sendDiff)
                 return;
-
+            
             // Closest event has already been announced.
             if (this.announced.some(event => event.uid === closest.uid))
                 return;
-
+                        
             this.announced.push(closest);
             this.channel.send(this.generateAnnouncement(closest));
         });
@@ -73,8 +74,8 @@ export class Announcer extends Module {
 
     end = () => this.job ? this.job.cancel() : {};
 
-    private anyNewIds = (existing: ICalEvent[], fetched: ICalEvent[]) => {
-        return existing.map(event => event.uid) === fetched.map(event => event.uid);
+    private anyUpdates = (existing: ICalEvent[], fetched: ICalEvent[]) => {
+        return !fetched.every(event => existing.includes(event));
     }
 
     private resolveChannel = async (id: string): Promise<TextChannel> => {
@@ -93,15 +94,21 @@ export class Announcer extends Module {
 
     // TODO: Tweak this to people's liking, this is just a quick mockup of what an announcement might look like
     private generateAnnouncement = (event: ICalEvent) => {
+        console.log(event)
         return this.manager.engine.embeds.build(event.summary, env.icon, event.description ?? 'This event does not have a description.', [
             {
-                name: 'Event Begins At',
-                value: time(event.start.getTime()),
+                name: 'Time',
+                value: `${time(event.start.getTime(), 'h:mmA')} - ${time(event.end.getTime(), 'h:mmA')}`,
                 inline: true
             },
             {
-                name: 'Event Ends At',
-                value: time(event.end.getTime()),
+                name: 'Duration',
+                value: getLatestTimeValue(event.end.getTime() - event.start.getTime()),
+                inline: true
+            },
+            {
+                name: 'Join Event',
+                value: link(':link: Click Here', event.location),
                 inline: true
             },
         ]);
