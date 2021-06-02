@@ -3,7 +3,7 @@ import scheduler from 'node-schedule';
 
 import { TextChannel } from 'discord.js';
 import { getCalendar, getClosestEvent, ICalEvent } from '../events/calendar';
-import { getLatestTimeValue, link, Module, numberEnding, time } from '@ilefa/ivy';
+import { getLatestTimeValue, isURL, link, Module, numberEnding, time } from '@ilefa/ivy';
 
 export class Announcer extends Module {
 
@@ -92,7 +92,6 @@ export class Announcer extends Module {
         return res as TextChannel;
     }
 
-    // TODO: Tweak this to people's liking, this is just a quick mockup of what an announcement might look like
     private generateAnnouncement = (event: ICalEvent) => {
         console.log(event)
         return this.manager.engine.embeds.build(event.summary, env.icon, event.description ?? 'This event does not have a description.', [
@@ -108,7 +107,9 @@ export class Announcer extends Module {
             },
             {
                 name: 'Join Event',
-                value: link(':link: Click Here', event.location),
+                value: isURL(event.location)
+                    ? link(':link: Click Here', event.location) 
+                    : ':pushpin: There is no link for this event.',
                 inline: true
             },
         ]);
