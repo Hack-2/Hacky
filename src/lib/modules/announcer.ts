@@ -22,8 +22,8 @@ export class Announcer extends Module {
         this.client.on('ready', async () => {
             let channel = await this.resolveChannel(env.announcer.channel);
             if (!channel) {
-                this.error('Could not initialize the announcer module.');
-                this.error(`The provided announcer channel [${env.announcer.channel}] is not valid.`);
+                this.severe('Could not initialize the announcer module.');
+                this.severe(`The provided announcer channel [${env.announcer.channel}] is not valid.`);
                 this.manager.unregisterModule(this);
                 return;
             }
@@ -114,8 +114,5 @@ export class Announcer extends Module {
             },
         ]);
     }
-
-    private log = (message: string) => this.manager.engine.logger.info('Announcer', message);
-    private error = (message: string) => this.manager.engine.logger.severe('Announcer', message);
 
 }

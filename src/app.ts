@@ -3,9 +3,9 @@ import CustomEventManager from './lib/events';
 
 import { Client } from 'discord.js';
 import { Announcer } from './lib/modules';
-import { DataProvider } from './lib/data';
 import { StartupHandler } from './lib/startup';
 import { IvyEngine, Logger } from '@ilefa/ivy';
+
 import { EventsCommand } from './lib/modules/commands';
 
 export const ICON = env.icon;
@@ -26,7 +26,7 @@ export default class HackyBot extends IvyEngine {
             ],
             reportErrors: [],
             color: 0x5084C4,
-            provider: new DataProvider(),
+            prefix: '.',
             startup: new StartupHandler(),
             presence: {
                 status: 'online',
@@ -47,7 +47,7 @@ export default class HackyBot extends IvyEngine {
     }
 
     registerCommands() {
-        this.registerCommand('events', new EventsCommand());
+        this.registerCommand(new EventsCommand());
     }
 
     registerModules() {

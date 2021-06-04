@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/Hack-2/hacky#readme",
   "dependencies": {
-    "@ilefa/ivy": "^1.0.5",
+    "@ilefa/ivy": "^1.0.6",
     "@typegoose/typegoose": "^7.6.0",
     "axios": "^0.21.1",
     "discord.js": "^12.5.3",
