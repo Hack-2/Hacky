@@ -55,8 +55,16 @@ export class EventsCommand extends Command {
             }
         }
 
-        let events = announcer
-            .events
+        let events = this.flatten(Array.from(announcer.events.entries(),
+            ([k, v]) => {
+                return {
+                    calendar: k,
+                    entry: announcer.entries.find(ent => ent.calendar === k),
+                    events: v
+                }
+            })
+            .filter(ent => ent.entry.includeInCommand)
+            .map(ent => ent.events))
             .sort((a, b) => a.start.getTime() - b.start.getTime());
 
         PaginatedEmbed.ofItems<ICalEvent>(
@@ -75,5 +83,7 @@ export class EventsCommand extends Command {
 
         return time(start.getTime(), 'MMMM Do [from]');
     }
+
+    private flatten = <T>(arr: T[][]) => arr.reduce((acc, val) => acc.concat(val), []);
 
 }

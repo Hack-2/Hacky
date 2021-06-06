@@ -1,8 +1,7 @@
 import axios from 'axios';
 import ical from 'node-ical';
-import env from '../../../env.json';
 
-import { replaceAll } from '@ilefa/ivy';
+import { replace } from '@ilefa/ivy';
 
 export type ICalEvent = {
     type: string;
@@ -10,7 +9,6 @@ export type ICalEvent = {
     start: Date;
     datetype: string;
     end: Date;
-    dtstamp: Date;
     organizer?: ICalEventOrganizer;
     uid: string;
     attendee?: ICalEventAttendee[];
@@ -36,21 +34,15 @@ export type ICalEventAttendee = {
     val: string;
 }
 
-type SearchAndReplace = {
-    search: string | RegExp;
-    replacement: string;
-    useRegularReplace?: boolean;
-}
-
 /**
  * Returns a list of ICalEvent objects in chronological order
  * as specified by their source calendar - if no argument is
  * supplied to this function, the ``calendar`` property of
  * the environment file is used instead.
  * 
- * @param id [optional] any link that returns an ICal-compatible payload
+ * @param id any link that returns an ICal-compatible payload
  */
-export const getCalendar = async (id: string = env.calendar): Promise<ICalEvent[]> =>
+export const getCalendar = async (id: string): Promise<ICalEvent[]> =>
     await axios
         .get(id)
         .then(res => res.data)
@@ -100,33 +92,5 @@ export const getCalendar = async (id: string = env.calendar): Promise<ICalEvent[
     if (target instanceof Date) 
         target = target.getTime();
 
-    return events.reduce((prev, cur) => (Math.abs(cur.dtstamp.getTime() - (target as number)) < Math.abs(prev.dtstamp.getTime() - (target as number))) ? cur : prev);
-}
-
-const replace = (str: string, replacements: SearchAndReplace[]) => {
-    let temp = str.slice();
-    for (let { search, replacement, useRegularReplace } of replacements) {
-        if (!useRegularReplace) {
-            temp = _replaceAll(temp, search, replacement);
-            continue;
-        }
-
-        temp = temp.replace(search, replacement);
-    }
-
-    return temp;
-}
-
-const _replaceAll = (input: string, search: string | RegExp, replace: string) => {
-    if (!(search instanceof RegExp))
-        return replaceAll(input, search, replace);
-    
-    let copy = input.slice();
-    if (!search.test(input))
-        return copy;
-
-    while (search.test(copy))
-        copy = copy.replace(search, replace);
-
-    return copy;
+    return events.reduce((prev, cur) => (Math.abs(cur.start.getTime() - (target as number)) < Math.abs(prev.start.getTime() - (target as number))) ? cur : prev);
 }

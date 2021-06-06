@@ -6,7 +6,7 @@ import { Announcer } from './lib/modules';
 import { StartupHandler } from './lib/startup';
 import { IvyEngine, Logger } from '@ilefa/ivy';
 
-import { EventsCommand } from './lib/modules/commands';
+import { EventsCommand, RulesCommand } from './lib/modules/commands';
 
 export const ICON = env.icon;
 
@@ -48,6 +48,7 @@ export default class HackyBot extends IvyEngine {
 
     registerCommands() {
         this.registerCommand(new EventsCommand());
+        this.registerCommand(new RulesCommand());
     }
 
     registerModules() {
